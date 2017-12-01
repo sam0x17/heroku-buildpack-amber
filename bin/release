@@ -19,7 +19,7 @@ parse_yaml() {
 
 eval $(parse_yaml shard.yml "shard_")
 
-# $PORT isn't needed here because amber use ENV[PORT]? || 3000 on enviroments configuration
+# $PORT isn't needed here because amber use ENV[PORT] on enviroments configuration
 
 cat << EOF
 ---
