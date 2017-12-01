@@ -64,5 +64,5 @@ PATH="${PATH}:${CRYSTAL_DIR}/bin"
 cd $BUILD_DIR
 eval $(parse_yaml shard.yml "shard_")
 start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
-  shards build --production --no-debug ${shard_name}
+  AMBER_ENV=production shards build --production --no-debug ${shard_name}
 finished
