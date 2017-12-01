@@ -60,22 +60,9 @@ start "Installing Crystal ($CRYSTAL_VERSION $CRYSTAL_VERSION_REASON) from $CRYST
 finished
 PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
-# Build the project
+# Build the Amber project
 cd $BUILD_DIR
-
-start "Installing Dependencies"
-  crystal deps --production
+eval $(parse_yaml shard.yml "shard_")
+start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
+  AMBER_ENV=production shards build --production --no-debug ${shard_name}
 finished
-
-NO_DEBUG_IF_AVAILABLE=`crystal build --help | grep -q -- --no-debug && echo -n --no-debug`
-
-if [ -f app.cr ]; then
-  start "Compiling app.cr (using old behaviour, app.cr exists - ignoring shard.yml)"
-    crystal build app.cr --release $NO_DEBUG_IF_AVAILABLE
-  finished
-else
-  eval $(parse_yaml shard.yml "shard_")
-  start "Compiling src/${shard_name}.cr (auto-detected from shard.yml)"
-    crystal build src/${shard_name}.cr --release $NO_DEBUG_IF_AVAILABLE -o app
-  finished
-fi

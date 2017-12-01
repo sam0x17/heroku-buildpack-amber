@@ -1,10 +1,14 @@
-# Crystal Heroku Buildpack
+# Amber Heroku Buildpack
 
-You can create an app in Heroku with Crystal's buildpack by running the
+> Based on [Crystal Heroku Buildpack](https://github.com/crystal-lang/heroku-buildpack-crystal)
+
+[![Amber logo](https://i.imgur.com/NEodgHV.png)](https://amberframework.org)
+
+You can create an app in Heroku with Amber's buildpack by running the
 following command:
 
 ```bash
-$ heroku create myapp --buildpack https://github.com/crystal-lang/heroku-buildpack-crystal.git
+$ heroku create myapp --buildpack https://github.com/amberframework/heroku-buildpack-amber.git
 ```
 
 The default behaviour is to use the [latest crystal release](https://github.com/crystal-lang/crystal/releases/latest).
@@ -16,10 +20,13 @@ application root directory with the version that should be used (e.g. `0.17.1`).
 In order for the buildpack to work properly you should have a `shard.yml` file,
 as it is how it will detect that your app is a Crystal app.
 
-Your application has to listen on a port defined by Heroku. It is given to you
-through the command line option `--port` and the environment variable `PORT`
-(accessible through `ENV["PORT"]` in Crystal). However, most web frameworks
-should handle this for you.
+Your application has to listen on a port defined by Heroku.
+
+Check `port: ENV["PORT"]` is in your `config/enviroments` files.
+
+To be able to use production enviroment config Heroku needs `.amber_secret_key` or `.encryption_key` during compilation process, so in this case you should remove the encryption key from `.gitignore` file.
+
+> DISCLAIMER: Don't publish encryption key in open source projects if you have sensitive config
 
 ## Testing
 
@@ -28,10 +35,13 @@ run `make test` to ensure the change works as intended and does not break backwa
 
 ## More info
 
-To learn more about how to deploy a Crystal application to Heroku, read
-[our blog post](http://crystal-lang.org/2016/05/26/heroku-buildpack.html).
+This buildpack have been configured to work with [Amber Framework](https://amberframework.org/) projects.
+
+To learn more about how to deploy other Crystal applications to Heroku, read
+[this blog post](http://crystal-lang.org/2016/05/26/heroku-buildpack.html).
 
 ## Older versions of Crystal
 
-If you have and older version of Crystal (`<= 0.9`), that uses the old
-`Projectfile` way of handling dependencies, please upgrade :-).
+Currently latest Amber `v0.3.6` is compatible with Crystal `v0.23.1`
+
+Other versions aren't guaranteed to be compatible.
