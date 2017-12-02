@@ -67,5 +67,5 @@ start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
   AMBER_ENV=production crystal deps build --production --no-debug ${shard_name}
 finished
 
-# Trying to export shard_name to be used by release script
+# Export shard_name to be used by release script
 echo ${shard_name} > /tmp/shard_name
