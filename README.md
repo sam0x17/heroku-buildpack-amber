@@ -26,7 +26,7 @@ Append the following code to your `config/application.cr` file:
 
 ```crystal
 Amber::Server.configure do |settings|
-  settings.port = (ENV["PORT"] || 3000).to_i
+  settings.port = ENV["PORT"].to_i if ENV["PORT"]?
 end
 ```
 
