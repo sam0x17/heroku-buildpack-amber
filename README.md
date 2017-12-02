@@ -22,7 +22,13 @@ as it is how it will detect that your app is a Crystal app.
 
 Your application has to listen on a port defined by Heroku.
 
-Check `port: ENV["PORT"]` is in your `config/enviroments` files.
+Append the following code to your `config/application.cr` file:
+
+```crystal
+Amber::Server.configure do |settings|
+  settings.port = (ENV["PORT"] || 3000).to_i
+end
+```
 
 To be able to use production enviroment config Heroku needs `.amber_secret_key` or `.encryption_key` during compilation process, so in this case you should remove the encryption key from `.gitignore` file.
 
