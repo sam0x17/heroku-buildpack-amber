@@ -80,7 +80,7 @@ PATH="${PATH}:${BUILD_DIR}/bin"
 cd $BUILD_DIR
 
 start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
-  AMBER_ENV=production crystal build --release --no-debug src/${shard_name}.cr -o bin/${shard_name}
+  AMBER_ENV=production crystal build --release --no-debug $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
   chmod +x $BUILD_DIR/bin/${shard_name}
 finished
 
