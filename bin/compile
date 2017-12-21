@@ -80,7 +80,7 @@ PATH="${PATH}:${BUILD_DIR}/bin"
 cd $BUILD_DIR
 
 start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
-  AMBER_ENV=production crystal build --release --no-debug src/${shard_name}.cr
+  AMBER_ENV=production crystal build --release --no-debug src/${shard_name}.cr -o bin/${shard_name}
 finished
 
 # Export shard_name to be used by release script
