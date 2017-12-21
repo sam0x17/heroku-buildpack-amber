@@ -63,8 +63,25 @@ PATH="${PATH}:${CRYSTAL_DIR}/bin"
 # Build the Amber project
 cd $BUILD_DIR
 eval $(parse_yaml shard.yml "shard_")
+
+start "Building amber CLI"
+  crystal deps
+  cd $BUILD_DIR/lib/amber
+  sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
+  sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/migrate.cr
+  sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
+  crystal deps
+  mkdir -p $BUILD_DIR/bin
+  crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
+finished
+
+chmod +x $BUILD_DIR/bin/amber
+PATH="${PATH}:${BUILD_DIR}/bin"
+cd $BUILD_DIR
+
 start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
-  AMBER_ENV=production crystal deps build --production --no-debug ${shard_name}
+  AMBER_ENV=production crystal build --release --no-debug $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
+  chmod +x $BUILD_DIR/bin/${shard_name}
 finished
 
 # Export shard_name to be used by release script
