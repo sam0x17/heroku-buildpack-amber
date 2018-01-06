@@ -61,7 +61,6 @@ finished
 PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
 # Build the Amber project
-eval $(parse_yaml shard.yml "shard_")
 cd $BUILD_DIR
 amber_executable=$CACHE_DIR/bin/amber
 
@@ -87,7 +86,7 @@ fi
 chmod +x $BUILD_DIR/bin/amber
 PATH="${PATH}:${BUILD_DIR}/bin"
 cd $BUILD_DIR
-
+eval $(parse_yaml shard.yml "shard_")
 start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
   AMBER_ENV=production crystal build --release --no-debug $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
   chmod +x $BUILD_DIR/bin/${shard_name}
