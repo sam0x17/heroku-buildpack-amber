@@ -61,18 +61,30 @@ finished
 PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
 # Build the Amber project
-cd $BUILD_DIR
 eval $(parse_yaml shard.yml "shard_")
+cd $BUILD_DIR
+amber_executable=$CACHE_DIR/bin/amber
 
-start "Building amber CLI"
-  crystal deps
-  cd $BUILD_DIR/lib/amber
-  sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
-  sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
-  crystal deps update
-  mkdir -p $BUILD_DIR/bin
-  crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
-finished
+if [ ! -e "$amber_executable" ]; then
+    echo "Amber CLI not compiled"
+    start "Building amber CLI"
+      crystal deps
+      cd $BUILD_DIR/lib/amber
+      sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
+      sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
+      crystal deps update
+      
+      mkdir -p $BUILD_DIR/bin
+      crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
+      cp $BUILD_DIR/bin/amber $CACHE_DIR/bin/amber
+    finished
+else 
+    echo "Amber CLI already compiled"
+    cp $CACHE_DIR/bin/amber $BUILD_DIR/bin/amber
+fi 
+
+
+
 
 chmod +x $BUILD_DIR/bin/amber
 PATH="${PATH}:${BUILD_DIR}/bin"
