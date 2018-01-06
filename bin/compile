@@ -62,9 +62,10 @@ PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
 # Build the Amber project
 amber_executable=$CACHE_DIR/bin/amber
-
+crystal deps
+    
 sart "Install Amber CLI"
-    crystal deps
+    cd $BUILD_DIR
     cd $BUILD_DIR/lib/amber
     sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
     sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
@@ -72,7 +73,6 @@ sart "Install Amber CLI"
 finished
 
 if [ ! -e "$amber_executable" ]; then
-    cd $BUILD_DIR
     start "Amber CLI not compiled"
     start "Building amber CLI"
       mkdir -p $BUILD_DIR/bin
