@@ -66,25 +66,21 @@ start "Install project dependencies"
   echo "\n"
   crystal deps
 finished
-    
-start "Install Amber CLI"
-    cd $BUILD_DIR/lib/amber
-    sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
-    sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
-    crystal deps update
-    cd $ENV_DIR
-finished
-
 
 amber_executable=$CACHE_DIR/bin/amber
 if [ ! -e "$amber_executable" ]; then
     start "Amber CLI not compiled"
-    start "Building amber CLI"
+    start "Installing amber CLI"
+      cd $BUILD_DIR/lib/amber
+      sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
+      sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
+      crystal deps update
       mkdir -p $BUILD_DIR/bin
       echo "\n"
       crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
       mkdir -p $CACHE_DIR/bin/
       cp -R $BUILD_DIR/bin/amber $CACHE_DIR/bin/
+      cd $ENV_DIR
     finished
 else 
     echo "Amber CLI already compiled"
