@@ -62,8 +62,8 @@ PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
 # Build the Amber project
 start "Install project dependencies"
-  amber_executable=$CACHE_DIR/bin/amber
   cd $BUILD_DIR
+  echo "\n"
   crystal deps
 finished
     
@@ -75,10 +75,13 @@ start "Install Amber CLI"
     cd $ENV_DIR
 finished
 
+
+amber_executable=$CACHE_DIR/bin/amber
 if [ ! -e "$amber_executable" ]; then
     start "Amber CLI not compiled"
     start "Building amber CLI"
       mkdir -p $BUILD_DIR/bin
+      echo "\n"
       crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
       mkdir -p $CACHE_DIR/bin/
       cp -R $BUILD_DIR/bin/amber $CACHE_DIR/bin/
