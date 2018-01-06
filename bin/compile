@@ -80,7 +80,7 @@ if [ ! -e "$amber_executable" ]; then
     finished
 else 
     echo "Amber CLI already compiled"
-    cp $CACHE_DIR/bin/amber $BUILD_DIR/bin/amber
+    cp -R $CACHE_DIR/bin/amber $BUILD_DIR/bin/amber
 fi 
 
 chmod +x $BUILD_DIR/bin/amber
