@@ -73,15 +73,14 @@ if [ ! -e "$amber_executable" ]; then
       sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
       sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
       crystal deps update
-      
       mkdir -p $BUILD_DIR/bin
       crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
-      mkdir $CACHE_DIR/bin/
+      mkdir -p $CACHE_DIR/bin/
       cp -R $BUILD_DIR/bin/amber $CACHE_DIR/bin/
     finished
 else 
     echo "Amber CLI already compiled"
-    mkdir $BUILD_DIR/bin/
+    mkdir -p $BUILD_DIR/bin/
     cp -R $CACHE_DIR/bin/amber $BUILD_DIR/bin/
 fi 
 
