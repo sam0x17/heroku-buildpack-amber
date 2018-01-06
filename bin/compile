@@ -65,11 +65,11 @@ amber_executable=$CACHE_DIR/bin/amber
 crystal deps
     
 sart "Install Amber CLI"
-    cd $BUILD_DIR
     cd $BUILD_DIR/lib/amber
     sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
     sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
     crystal deps update
+    cd $ENV_DIR
 finished
 
 if [ ! -e "$amber_executable" ]; then
