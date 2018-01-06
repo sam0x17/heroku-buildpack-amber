@@ -83,9 +83,10 @@ if [ ! -e "$amber_executable" ]; then
       cd $ENV_DIR
     finished
 else 
-    echo "Amber CLI already compiled"
-    mkdir -p $BUILD_DIR/bin/
-    cp -R $CACHE_DIR/bin/amber $BUILD_DIR/bin/
+    start "Amber CLI already compiled, using cached version"
+      mkdir -p $BUILD_DIR/bin/
+      cp -R $CACHE_DIR/bin/amber $BUILD_DIR/bin/
+    finished
 fi 
 
 chmod +x $BUILD_DIR/bin/amber
