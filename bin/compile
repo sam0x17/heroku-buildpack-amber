@@ -76,11 +76,13 @@ if [ ! -e "$amber_executable" ]; then
       
       mkdir -p $BUILD_DIR/bin
       crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
-      cp -R $BUILD_DIR/bin/amber $CACHE_DIR/bin/amber
+      mkdir $CACHE_DIR/bin/
+      cp -R $BUILD_DIR/bin/amber $CACHE_DIR/bin/
     finished
 else 
     echo "Amber CLI already compiled"
-    cp -R $CACHE_DIR/bin/amber $BUILD_DIR/bin/amber
+    mkdir $BUILD_DIR/bin/
+    cp -R $CACHE_DIR/bin/amber $BUILD_DIR/bin/
 fi 
 
 chmod +x $BUILD_DIR/bin/amber
