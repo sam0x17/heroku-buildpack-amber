@@ -65,7 +65,7 @@ amber_executable=$CACHE_DIR/bin/amber
 cd $BUILD_DIR
 crystal deps
     
-sart "Install Amber CLI"
+start "Install Amber CLI"
     cd $BUILD_DIR/lib/amber
     sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
     sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
