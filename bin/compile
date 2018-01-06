@@ -62,6 +62,7 @@ PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
 # Build the Amber project
 amber_executable=$CACHE_DIR/bin/amber
+cd $BUILD_DIR
 crystal deps
     
 sart "Install Amber CLI"
