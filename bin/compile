@@ -73,7 +73,6 @@ if [ ! -e "$amber_executable" ]; then
     start "Installing amber CLI"
       cd $BUILD_DIR/lib/amber
       sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
-      sed -in "68,70d" $BUILD_DIR/lib/amber/shard.yml
       crystal deps update
       mkdir -p $BUILD_DIR/bin
       echo -e "\n"
