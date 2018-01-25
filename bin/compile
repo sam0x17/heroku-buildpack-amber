@@ -64,7 +64,7 @@ PATH="${PATH}:${CRYSTAL_DIR}/bin"
 start "Install project dependencies"
   cd $BUILD_DIR
   echo -e "\n"
-  crystal deps
+  shards install --production
 finished
 
 amber_executable=$CACHE_DIR/bin/amber
@@ -73,10 +73,10 @@ if [ ! -e "$amber_executable" ]; then
     start "Installing amber CLI"
       cd $BUILD_DIR/lib/amber
       sed -in "4d" $BUILD_DIR/lib/amber/src/amber/cli/commands/database.cr
-      crystal deps update
+      shards update --production
       mkdir -p $BUILD_DIR/bin
       echo -e "\n"
-      crystal build --no-debug -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
+      crystal build --no-debug --stats -o $BUILD_DIR/bin/amber $BUILD_DIR/lib/amber/src/amber/cli.cr
       mkdir -p $CACHE_DIR/bin/
       cp -R $BUILD_DIR/bin/amber $CACHE_DIR/bin/
       cd $ENV_DIR
@@ -94,7 +94,7 @@ cd $BUILD_DIR
 eval $(parse_yaml shard.yml "shard_")
 
 start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
-  AMBER_ENV=production crystal build --release --no-debug $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
+  AMBER_ENV=production crystal build --release --no-debug --stats $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
   chmod +x $BUILD_DIR/bin/${shard_name}
 finished
 
