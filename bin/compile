@@ -93,10 +93,12 @@ PATH="${PATH}:${BUILD_DIR}/bin"
 cd $BUILD_DIR
 eval $(parse_yaml shard.yml "shard_")
 
-start "Building src/${shard_name}.cr (auto-detected from shard.yml)"
-  AMBER_ENV=production crystal build --release --no-debug --stats $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
-  chmod +x $BUILD_DIR/bin/${shard_name}
-finished
+for target in $(compgen -A variable | grep shard_targets | sed 's/shard_targets_\(.*\)_main/\1/g'); do
+  start "Building src/${target}.cr (auto-detected from shard.yml)"
+    AMBER_ENV=production crystal build --release --no-debug $BUILD_DIR/src/${target}.cr -o $BUILD_DIR/bin/${target}
+    chmod +x $BUILD_DIR/bin/${target}
+  finished
+done
 
 # Export shard_name to be used by release script
 echo ${shard_name} > /tmp/shard_name
