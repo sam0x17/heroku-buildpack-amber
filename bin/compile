@@ -60,6 +60,19 @@ start "Installing Crystal ($CRYSTAL_VERSION $CRYSTAL_VERSION_REASON) from $CRYST
 finished
 PATH="${PATH}:${CRYSTAL_DIR}/bin"
 
+# Install Node.js
+start "Installing Node.js"
+  wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  nvm install --lts
+  node --version
+  NODE_PATH=`which node`
+  NODE_PATH=`dirname $NODE_PATH`
+  ln -s $NODE_PATH/node $BUILD_DIR/node
+  ln -s $NODE_PATH/npm $BUILD_DIR/npm
+finished
+
 # Build the Amber project
 start "Install project dependencies"
   cd $BUILD_DIR
