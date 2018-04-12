@@ -67,10 +67,21 @@ start "Installing Node.js"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   nvm install --lts
   node --version
-  NODE_PATH=`which node`
-  NODE_PATH=`dirname $NODE_PATH`
-  ln -s $NODE_PATH/node $BUILD_DIR/node
-  ln -s $NODE_PATH/npm $BUILD_DIR/npm
+  mv $HOME/.nvm /app/vendor/
+  export NVM_DIR="/app/vendor/.nvm"
+finished
+
+# Add Node.js to PATH
+start "Add Node.js to PATH"
+  echo ""
+  ls -la /app/vendor
+  PATH_SCRIPT=/app/.profile.d/node-js-path.sh
+  touch $PATH_SCRIPT
+  echo "#!/bin/bash" > $PATH_SCRIPT
+  echo "export PATH=\$PATH:$NODE_PATH" > $PATH_SCRIPT
+  chmod +x $PATH_SCRIPT
+  echo "added $NODE_PATH to PATH via $PATH_SCRIPT:"
+  cat $PATH_SCRIPT
 finished
 
 # Build the Amber project
@@ -110,6 +121,9 @@ start "Building src/${shard_name}.cr (auto-detected from shared.yml)"
   AMBER_ENV=production crystal build --release --no-debug --stats $BUILD_DIR/src/${shard_name}.cr -o $BUILD_DIR/bin/${shard_name}
   chmod +x $BUILD_DIR/bin/${shard_name}
 finished
+
+# announce build dir
+echo "Build Directory: $BUILD_DIR"
 
 # Export shard_name to be used by release script
 echo ${shard_name} > /tmp/shard_name
